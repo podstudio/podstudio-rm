@@ -5,6 +5,8 @@ require 'bundler'
 Bundler.require
 
 require 'ruby_motion_query'
+require 'rubygems'
+require 'motion-pixate'
 
 Motion::Project::App.setup do |app|
 
@@ -24,6 +26,10 @@ Motion::Project::App.setup do |app|
   # prerendered_icon is only needed in iOS 6
   #app.prerendered_icon = true
 
+  app.pixate.user = 'naderhen@gmail.com'
+  app.pixate.key  = "NICETRY1234"
+  app.pixate.framework = 'vendor/Pixate.framework'
+
   app.device_family = [:iphone, :ipad]
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
 
@@ -42,3 +48,6 @@ Motion::Project::App.setup do |app|
   # end
  
 end
+
+task :"build:simulator" => :"pixate:sass"
+task :"build:device" => :"pixate:sass"
