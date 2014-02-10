@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    bubble-wrap (1.4.0)
+    motion-layout (0.0.1)
     motion-pixate (2.0)
       sass
     ruby_motion_query (0.5.2)
@@ -10,5 +12,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bubble-wrap
+  motion-layout
   motion-pixate
   ruby_motion_query
