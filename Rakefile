@@ -7,6 +7,9 @@ Bundler.require
 require 'ruby_motion_query'
 require 'rubygems'
 require 'motion-pixate'
+require 'bubble-wrap'
+require 'bubble-wrap/all'
+require 'motion-layout'
 
 Motion::Project::App.setup do |app|
 
@@ -27,7 +30,7 @@ Motion::Project::App.setup do |app|
   #app.prerendered_icon = true
 
   app.pixate.user = 'naderhen@gmail.com'
-  app.pixate.key  = "NICETRY1234"
+  app.pixate.key  = 'TU9Q1-69073-D0G71-7HSPE-3H0B6-GPPBH-AJK0K-39I44-OGM0O-TA3PR-F3UMO-RN2HI-D09V7-TKKNG-G0OOT-1M'
   app.pixate.framework = 'vendor/Pixate.framework'
 
   app.device_family = [:iphone, :ipad]
