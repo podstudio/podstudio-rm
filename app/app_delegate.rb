@@ -2,6 +2,7 @@ class AppDelegate
   attr_reader :window
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
+    return true if RUBYMOTION_ENV == 'test'
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
     player_controller = PlayerController.new
