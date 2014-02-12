@@ -31,6 +31,10 @@ class PlayerController < UIViewController
         startPlayer
       end
     end
+
+    AVAudioSession.sharedInstance.setDelegate(self)
+    AVAudioSession.sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error:nil)
+    AVAudioSession.sharedInstance.setActive(true, error:nil)
   end
 
   # Remove if you are only supporting portrait
