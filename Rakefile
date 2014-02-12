@@ -33,6 +33,10 @@ Motion::Project::App.setup do |app|
   app.pixate.key  = 'TU9Q1-69073-D0G71-7HSPE-3H0B6-GPPBH-AJK0K-39I44-OGM0O-TA3PR-F3UMO-RN2HI-D09V7-TKKNG-G0OOT-1M'
   app.pixate.framework = 'vendor/Pixate.framework'
 
+  app.frameworks << 'AVFoundation'
+  app.frameworks << 'AudioToolbox'
+  app.background_modes = [:audio]
+
   app.device_family = [:iphone, :ipad]
   app.interface_orientations = [:portrait, :landscape_left, :landscape_right, :portrait_upside_down]
 
