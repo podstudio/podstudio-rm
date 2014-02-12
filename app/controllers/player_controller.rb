@@ -14,7 +14,7 @@ class PlayerController < UIViewController
 
     url = "http://streaming.osu.edu/wosu/classical101/In_the_Key_of_Danzmayr_Composer_Performer.mp3"
     @player = BW::Media.play(url) do |player|
-     @play_stop.setTitle("Stop", forState: UIControlStateNormal)
+     @play_stop.setTitle("STOP", forState: UIControlStateNormal)
     end
 
     Motion::Layout.new do |layout|

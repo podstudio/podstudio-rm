@@ -1,10 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    awesome_print_motion (0.1.0)
     bubble-wrap (1.4.0)
+    motion-facon (0.5.0.1)
     motion-layout (0.0.1)
     motion-pixate (2.0)
       sass
+    motion-redgreen (0.1.0)
     ruby_motion_query (0.5.2)
     sass (3.2.13)
 
@@ -12,7 +15,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print_motion
   bubble-wrap
+  motion-facon
   motion-layout
   motion-pixate
+  motion-redgreen
   ruby_motion_query

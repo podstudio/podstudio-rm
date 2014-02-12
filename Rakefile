@@ -10,6 +10,8 @@ require 'motion-pixate'
 require 'bubble-wrap'
 require 'bubble-wrap/all'
 require 'motion-layout'
+require "awesome_print_motion"
+require "motion-facon"
 
 Motion::Project::App.setup do |app|
 
@@ -53,7 +55,7 @@ Motion::Project::App.setup do |app|
   # app.pods do
   #   pod 'AFNetworking'
   # end
- 
+  app.redgreen_style = :full
 end
 
 task :"build:simulator" => :"pixate:sass"

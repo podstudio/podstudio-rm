@@ -10,4 +10,7 @@ class PlayerControllerStylesheet < ApplicationStylesheet
   def root_view(st)
     st.background_color = color.white
   end
+
+  def play_stop(st)
+  end
 end
