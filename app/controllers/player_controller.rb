@@ -35,10 +35,21 @@ class PlayerController < UIViewController
     @end_time.styleClass = "h5"
 
     @slider = rmq(@playback_view).append(UISlider, :slider).get
+    @slider.continuous = false
+    rmq(@slider).on(:change) do
+      seekToValue(@slider.value)
+    end
 
-    url = "http://streaming.osu.edu/wosu/classical101/In_the_Key_of_Danzmayr_Composer_Performer.mp3"
+    url = "http://feeds.soundcloud.com/stream/133946490-hdtgm-82-double-team-w-owen-burke.mp3"
     @player = BW::Media.play(url) do |player|
-     @play_stop.setTitle("STOP", forState: UIControlStateNormal)
+      @play_stop.setTitle("STOP", forState: UIControlStateNormal)
+      startTimer
+    end
+
+    @duration_observer = App.notification_center.observe 'MPMovieDurationAvailableNotification' do |notification|
+      duration = @player.duration
+      @slider.maximumValue = duration
+      @end_time.text = formatted_time(duration)
     end
 
     Motion::Layout.new do |layout|
@@ -57,14 +68,14 @@ class PlayerController < UIViewController
       layout.view @playback_view
       layout.subviews "play_stop" => @play_stop, "start_time" => @start_time,
                       "end_time" => @end_time, "slider" => @slider
-      layout.metrics "zero" => 0, "top" => 50, "button_size" => 100, "button_size_with_margin" => 115, "text_width" => 50
+      layout.metrics "zero" => 0, "top" => 50, "button_size" => 100, "button_size_with_margin" => 115, "text_width" => 60
       layout.vertical  "|-[play_stop]-|"
       layout.vertical  "|-[slider]-(>=zero)-|"
       layout.vertical  "|-top-[start_time]-(>=zero)-|"
       layout.vertical  "|-top-[end_time]-(>=zero)-|"
       layout.horizontal "|-zero-[play_stop(==button_size)]-(>=zero)-|"
       layout.horizontal "|-button_size_with_margin-[slider]-(<=zero)-|"
-      layout.horizontal "|-button_size_with_margin-[start_time(==text_width)]-(>=zero)-[end_time(==text_width)]-|"
+      layout.horizontal "|-button_size_with_margin-[start_time(==text_width)]-(>=zero)-[end_time(==text_width)]-zero-|"
     end
 
     rmq(@play_stop).on(:tap) do
@@ -90,13 +101,54 @@ class PlayerController < UIViewController
     rmq.all.reapply_styles
   end
 
+  def viewWillDisappear(animated)
+    App.notification_center.unobserve @duration_observer
+    stopTimer
+  end
+
   def stopPlayer
     @play_stop.setTitle("Play", forState: UIControlStateNormal)
     @player.stop
+    stopTimer
   end
 
   def startPlayer
     @play_stop.setTitle("Stop", forState: UIControlStateNormal)
     @player.play
+    startTimer
+  end
+
+  def startTimer
+    @timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target:self, selector:'playerTick', userInfo:nil, repeats:true)
+  end
+
+  def stopTimer
+    if !@timer.nil?
+      @timer.invalidate
+      @timer = nil
+    end
+  end
+
+  def playerTick
+    current_time = @player.currentPlaybackTime
+
+    @slider.value = current_time
+    @start_time.text = formatted_time(current_time)
+  end
+
+  def seekToValue(value)
+    @player.currentPlaybackTime = value
+  end
+
+  def formatted_time(total_seconds)
+    return "00:00:00" if total_seconds.nil? || total_seconds.nan?
+    seconds = (total_seconds % 60) || 0
+    minutes = (total_seconds / 60) % 60 || 0
+    hours = total_seconds / 3600 || 0
+
+    formatted_seconds = "%02d" % seconds
+    formatted_minutes = "%02d" % minutes
+    formatted_hours = "%02d" % hours
+    "#{formatted_hours}:#{formatted_minutes}:#{formatted_seconds}"
   end
 end
