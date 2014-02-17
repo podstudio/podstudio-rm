@@ -13,4 +13,32 @@ class PlayerControllerStylesheet < ApplicationStylesheet
 
   def play_stop(st)
   end
+
+  def thumbnail(st)
+
+  end
+
+  def podcast_title(st)
+
+  end
+
+  def episode_title(st)
+
+  end
+
+  def playback_view(st)
+
+  end
+
+  def start_time(st)
+
+  end
+
+  def end_time(st)
+
+  end
+
+  def slider(st)
+
+  end
 end
