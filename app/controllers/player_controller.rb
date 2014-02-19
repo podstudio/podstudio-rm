@@ -8,6 +8,11 @@ class PlayerController < UIViewController
 
     self.title = "Player"
 
+    AVAudioSession.sharedInstance.setDelegate(self)
+    AVAudioSession.sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error:nil)
+    UIApplication.sharedApplication.beginReceivingRemoteControlEvents
+    AVAudioSession.sharedInstance.setActive(true, error:nil)
+
     @thumbnail = rmq.append(UIImageView, :thumbnail).get
     @thumbnail.backgroundColor = UIColor.blackColor
     @thumbnail.url = "http://cdn.earwolf.com/wp-content/uploads/2011/04/HDTGMFULL.jpg"
@@ -50,6 +55,7 @@ class PlayerController < UIViewController
       duration = @player.duration
       @slider.maximumValue = duration
       @end_time.text = formatted_time(duration)
+      updateNowPlayingInfo(@player)
     end
 
     Motion::Layout.new do |layout|
@@ -85,10 +91,6 @@ class PlayerController < UIViewController
         startPlayer
       end
     end
-
-    AVAudioSession.sharedInstance.setDelegate(self)
-    AVAudioSession.sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error:nil)
-    AVAudioSession.sharedInstance.setActive(true, error:nil)
   end
 
   # Remove if you are only supporting portrait
@@ -106,9 +108,22 @@ class PlayerController < UIViewController
     stopTimer
   end
 
+  def remoteControlReceivedWithEvent(event)
+    case event.subtype
+    when UIEventSubtypeRemoteControlPlay
+      startPlayer
+    when UIEventSubtypeRemoteControlPause
+      stopPlayer
+    when UIEventSubtypeRemoteControlNextTrack
+      seekToValue(@player.currentPlaybackTime + 15)
+    when UIEventSubtypeRemoteControlPreviousTrack
+      seekToValue(@player.currentPlaybackTime - 15)
+    end
+  end
+
   def stopPlayer
     @play_stop.setTitle("Play", forState: UIControlStateNormal)
-    @player.stop
+    @player.pause
     stopTimer
   end
 
@@ -138,6 +153,22 @@ class PlayerController < UIViewController
 
   def seekToValue(value)
     @player.currentPlaybackTime = value
+  end
+
+  def updateNowPlayingInfo(player)
+    nowPlayingInfo = {
+      MPMediaItemPropertyTitle => "Wicker Man",
+      MPMediaItemPropertyArtist => "How Did This Get Made",
+      MPMediaItemPropertyPlaybackDuration => player.duration,
+      MPNowPlayingInfoPropertyElapsedPlaybackTime => player.currentPlaybackTime,
+      MPNowPlayingInfoPropertyPlaybackRate => player.currentPlaybackRate
+    }
+
+    if !@thumbnail.image.nil?
+      nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.alloc.initWithImage(@thumbnail.image)
+    end
+
+    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = nowPlayingInfo
   end
 
   def formatted_time(total_seconds)
