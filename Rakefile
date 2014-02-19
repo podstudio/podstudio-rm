@@ -44,6 +44,10 @@ Motion::Project::App.setup do |app|
 
   app.files += Dir.glob(File.join(app.project_dir, 'lib/**/*.rb'))
 
+  app.entitlements['keychain-access-groups'] = [
+    app.seed_id + '.' + app.identifier
+  ]
+
   # Use `rake config' to see complete project settings, here are some examples:
   #
   # app.fonts = ['Oswald-Regular.ttf', 'FontAwesome.otf'] # These go in /resources
