@@ -5,8 +5,8 @@ class AppDelegate
     return true if RUBYMOTION_ENV == 'test'
     @window = UIWindow.alloc.initWithFrame(UIScreen.mainScreen.bounds)
 
-    player_controller = PlayerController.new
-    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(player_controller)
+    search_controller = SearchController.new
+    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(search_controller)
 
     @window.styleMode = PXStylingNormal
 
