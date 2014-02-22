@@ -1,0 +1,3 @@
+class Podcast < CDQManagedObject
+
+end
