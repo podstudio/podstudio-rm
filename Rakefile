@@ -59,8 +59,15 @@ Motion::Project::App.setup do |app|
   # app.pods do
   #   pod 'AFNetworking'
   # end
+
+  app.pods do
+    pod 'SIAlertView'
+  end
+
   app.redgreen_style = :full
 end
 
 task :"build:simulator" => :"pixate:sass"
 task :"build:device" => :"pixate:sass"
+task :"build:simulator" => :"schema:build"
+task :"build:simulator" => :"schema:build"
