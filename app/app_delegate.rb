@@ -9,7 +9,8 @@ class AppDelegate
     cdq.setup
 
     search_controller = SearchController.new
-    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(search_controller)
+    player_controller = PlayerController.new
+    @window.rootViewController = UINavigationController.alloc.initWithRootViewController(player_controller)
 
     @window.styleMode = PXStylingNormal
 

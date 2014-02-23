@@ -46,7 +46,7 @@ class PlayerController < UIViewController
     end
 
     url = "http://feeds.soundcloud.com/stream/133946490-hdtgm-82-double-team-w-owen-burke.mp3"
-    @player = BW::Media.play(url) do |player|
+    @player = NowPlaying.sharedInstance.player(url) do |player|
       @play_stop.setTitle("STOP", forState: UIControlStateNormal)
       startTimer
     end
@@ -168,7 +168,7 @@ class PlayerController < UIViewController
       nowPlayingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork.alloc.initWithImage(@thumbnail.image)
     end
 
-    MPNowPlayingInfoCenter.defaultCenter.nowPlayingInfo = nowPlayingInfo
+    NowPlaying.sharedInstance.updateNowPlayingInfo(nowPlayingInfo)
   end
 
   def formatted_time(total_seconds)
